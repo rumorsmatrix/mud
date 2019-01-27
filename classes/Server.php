@@ -42,20 +42,20 @@ class Server {
 
 		$this->websockets->onConnect(
 			function ($client) {
-				$this->onConnect($this->players[$client['cookies']['ws_session']]);
+				$this->onConnect($this->players[(int)$client['socket']]);
 			}
 		);
 
 		$this->websockets->onDisconnect(
 			function ($client) {
-				$this->onDisconnect($this->players[$client['cookies']['ws_session']]);
+				$this->onDisconnect($this->players[(int)$client['socket']]);
 			}
 		);
 
 		$this->websockets->onMessage(
 			function ($sender, $message) {
-				if (!empty($this->players[$sender['cookies']['ws_session']])) {
-					$this->onMessage($this->players[$sender['cookies']['ws_session']], $message);
+				if (!empty($this->players[(int)$sender['socket']])) {
+					$this->onMessage($this->players[(int)$sender['socket']], $message);
 				}
 			}
 		);
@@ -73,19 +73,19 @@ class Server {
 		$this->log("Validating client...");
 		if (
 			(isset($client['headers']['origin']) && $client['headers']['origin'] === 'https://rumorsmatrix.com') &&
-			(isset($client['cookies']['ws_session']))
+			(null !== ((int)$client['socket']))
 		) {
 
-			if (empty($this->players[$client['cookies']['ws_session']])) {
+			if (empty($this->players[(int)$client['socket']])) {
 
 				// see if this player exists in the database
-				$player = Player::where('session', $client['cookies']['ws_session'])->first();
+				$player = Player::where('session', (int)$client['cookies']['ws_session'])->first();
 
 				if ($player) {
 					// this player exists, add it to the players in memory
 					/** @var Player $player */
 					$player->setClient($client);
-					$this->players[$client['cookies']['ws_session']] = $player;
+					$this->players[(int)$client['socket']] = $player;
 
 
 					$this->log("Accepted connection (added to memory): " . $player->name);
@@ -100,8 +100,8 @@ class Server {
 			} else {
 
 				// this session is already in the players list, so we're happy
-				$this->players[$client['cookies']['ws_session']]->setClient($client);
-				$this->log("Accepted connection (already in memory): " . $this->players[$client['cookies']['ws_session']]->name );
+				$this->players[(int)$client['socket']]->setClient($client);
+				$this->log("Accepted connection (already in memory): " . $this->players[(int)$client['socket']]->name );
 				return true;
 			}
 
@@ -123,8 +123,8 @@ class Server {
 		$this->log($player->name . " disconnected.");
 
 		// we have to check, because they might have opened a new socket elsewhere (ie: closed old tab with new one already connected)
-		if (isset($this->players[$player->getClient()['cookies']['ws_session']])) {
-			unset($this->players[$player->getClient()['cookies']['ws_session']]);
+		if (isset($this->players[(int)$player->getClient()['socket']])) {
+			unset($this->players[(int)$player->getClient()['socket']]);
 		}
 	}
 
