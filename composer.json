@@ -1,0 +1,12 @@
+{
+    "require": {
+        "vakata/websocket": "^1.0",
+        "illuminate/database": "^5.5",
+        "mnapoli/front-yaml": "^1.6"
+    },
+    "autoload": {
+        "psr-4": {
+            "Rumorsmatrix\\Mud\\": "classes/"
+        }
+    }
+}
