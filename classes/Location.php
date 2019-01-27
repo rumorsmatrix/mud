@@ -16,6 +16,7 @@ class Location extends \Illuminate\Database\Eloquent\Model {
 	private $yaml = null;
 	private $html = '';
 	private $connections = [];
+	private $players_present = [];
 
 
 	public function __construct() {
@@ -27,6 +28,25 @@ class Location extends \Illuminate\Database\Eloquent\Model {
 	public function getConnections() {
 		if (empty($this->yaml)) $this->yaml = $this->markdown->getYAML();
 		return $this->connections;
+	}
+
+	public function getPlayersPresent() {
+		return $this->players_present;
+	}
+
+	public function setPlayerPresent(Player $player) {
+		$this->players_present[$player->id] = $player;
+	}
+
+	public function setPlayerNotPresent(Player $player, Server $server) {
+		if (isset($this->players_present[$player->id])) {
+			unset($this->players_present[$player->id]);
+
+			// did the last player just leave?
+			if (count($this->players_present) === 0) {
+				$server->unsetLocation($this->id);
+			}
+		}
 	}
 
 	public function getYAML() {

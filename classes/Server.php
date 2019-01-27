@@ -12,8 +12,11 @@ class Server {
 	private $log_file = "";
 	private $construct_time = 0;
 	private $listening_time = 0;
+
+	// objects "cached" on the server
 	private $players = [];
 	private $locations = [];
+
 
 	public function __construct($address = 'ws://127.0.0.1:8080', $cert = null, $log_file = "") {
 		$this->construct_time = time();
@@ -116,6 +119,7 @@ class Server {
 		$this->log("Connected: " . $player->name);
 
 		// send the player's current location to them
+		$player->moveToLocation($player->location_id, $this);
 		Parser::sendLocation($player, $this);
 	}
 
@@ -180,15 +184,40 @@ class Server {
 		return $this->locations;
 	}
 
-	public function getLocation($location_id) {
-		return (isset($this->locations[$location_id])) ? $this->locations[$location_id] : NULL;
+	public function getLocationByID($location_id) {
+		if (isset($this->locations[$location_id])) {
+			// location is in-memory on the server object
+			$location = $this->locations[$location_id];
+
+		} else {
+			// load the location from the database
+			$location = Location::find($location_id);
+
+			if ($location) {
+				$this->log("Loaded location ({$location->slug}) from database to memory.");
+				$this->setLocation($location->id, $location);
+
+			} else {
+				// todo: the location ID is invalid, this should never happen?
+				echo "INVALID LOCATION ID: " . $location_id;
+				die();
+			}
+
+		}
+		return $location;
 	}
 
 	public function setLocation($index, Location $location) {
 		$this->locations[$index] = $location;
 	}
 
-	// todo: need an unsetLocation() call or memory will get clogged up with them!
+	public function unsetLocation($location_id) {
+		if (isset($this->locations[$location_id])) {
+			$this->log("Unset location ID ({$location_id}) from memory.");
+			unset($this->locations[$location_id]);
+		}
+	}
+
 
 
 	public function log($message) {
