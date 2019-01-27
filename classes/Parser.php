@@ -11,6 +11,7 @@ class Parser {
 	static public function handle(array $data, Player $player, Server $server) {
 
 		foreach($data as $key => $value) {
+			$value = trim($value);
 
 			if ($key === 'move') {
 				$current_location = $player->getCurrentLocation($server);
@@ -18,8 +19,11 @@ class Parser {
 					$player->moveToLocation($value, $server);
 					static::sendLocation($player, $server);
 				}
-			}
 
+			} elseif ($key === 'say' && !empty($value)) {
+				$say_message = "<span class=\"yellow\">{$player->name}</span> says, &quot;{$value}&quot;";
+				$server->broadcastToLocation($say_message,  $player->getCurrentLocation($server));
+			}
 
 		}
 	}

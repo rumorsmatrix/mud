@@ -119,7 +119,8 @@ class Server {
 		$this->log("Connected: " . $player->name);
 
 		// send the player's current location to them
-		$player->moveToLocation($player->location_id, $this);
+		$location = $player->getCurrentLocation($this);
+		$location->setPlayerPresent($player, $this);
 		Parser::sendLocation($player, $this);
 	}
 
@@ -166,6 +167,14 @@ class Server {
 			$this->send($player, $message);
 		}
 		$this->log("---- Broadcasting finished");
+	}
+
+
+	public function broadcastToLocation($message, Location $location) {
+		$players = $location->getPlayersPresent();
+		foreach ($players as $player) {
+			$this->send($player, $message);
+		}
 	}
 
 

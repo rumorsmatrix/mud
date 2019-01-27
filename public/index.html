@@ -27,6 +27,10 @@
 			border-radius: 4px;
 		}
 
+		#terminal_container p {
+			line-height: 1.4rem;
+		}
+
 		#terminal_container a {
 			color: #EEE;
 			text-decoration: none;
@@ -42,6 +46,24 @@
 			color: #7FDBFF;
 		}
 
+		#terminal_submit {
+			display: none;
+		}
+
+		#terminal_input {
+			width: 100%;
+			background: #333;
+			color: #fff;
+			padding: 0.4rem;
+			border: none;
+			border-radius: 4px;
+			font-family: 'Fira Mono', monospace;
+		}
+
+		#terminal_input:focus {
+			outline: 0;
+		}
+
 	</style>
 </head>
 <body class="bg-black gray">
@@ -49,10 +71,17 @@
 	<div id="terminal_container">
 		<p><img class="header-image" src="imgs/botlg-header.jpg"></p>
 	</div>
+	<div id="terminal_form_container">
+		<form>
+			<input type="text" id="terminal_input">
+			<input type="submit" id="terminal_submit">
+		</form>
+	</div>
+
 
 <script>
 
-	terminal = new Terminal('terminal_container');
+	terminal = new Terminal('terminal');
 	client = new Client();
 
 </script>

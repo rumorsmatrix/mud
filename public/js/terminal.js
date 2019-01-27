@@ -1,8 +1,13 @@
 class Terminal {
 
-	constructor(container_id) {
-		this.container = document.getElementById(container_id);
+	constructor(container_id_prefix) {
+		this.container = document.getElementById(container_id_prefix + "_container");
 		this.container.addEventListener('click', this);
+
+		this.form_container = document.getElementById(container_id_prefix + "_form_container");
+		this.form_input = document.getElementById(container_id_prefix + "_input");
+		this.form_container.addEventListener('submit', this);
+
 		this.handleEvent();
 	}
 
@@ -31,6 +36,19 @@ class Terminal {
 
 	handleEvent(event = undefined) {
 		if (event === undefined) return;
+
+		if (event.type === 'submit') {
+			event.preventDefault();
+			let user_input = this.form_input.value;
+
+			if (user_input) {
+				let data = {'say': user_input};
+				client.send(JSON.stringify(data));
+				this.form_input.value = '';
+			}
+		}
+
+
 		if (event.target.tagName === "A") {
 			event.preventDefault();
 			let arr = this.paramsToArray(event.target.search);
