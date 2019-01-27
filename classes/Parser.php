@@ -49,16 +49,8 @@ class Parser {
 
 		}
 
-
-		// todo: this should probably be in the location->getHTML method
-		$yaml = $location->getYAML();
-		$html = $location->getHTML();
-		if (isset($yaml['title'])) {
-			$html = "<h2 class=\"location-title\">{$yaml['title']}</h2>" . $html;
-		}
-
-		$server->send($player, $yaml);
-		$server->send($player,  $html);
+		$server->send($player, $location->getYAML());
+		$server->send($player,  $location->getHTML());
 	}
 
 

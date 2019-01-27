@@ -44,7 +44,13 @@ class Location extends \Illuminate\Database\Eloquent\Model {
 	public function getHTML() {
 		if (empty($this->markdown)) $this->markdown = $this->getMarkdown();
 		if (empty($this->html)) $this->html = $this->markdown->getContent();
-		return $this->html;
+		if (empty($this->yaml)) $this->html = $this->markdown->getYAML();
+
+		$html = $this->html;
+		if (isset($this->yaml['title'])) {
+			$html = "<h2 class=\"location-title\">{$this->yaml['title']}</h2>" . $html;
+		}
+		return $html;
 	}
 
 
