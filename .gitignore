@@ -1,3 +1,4 @@
 vendor/*
 server/config/db.php
 public/imgs/*
+server/locations/*
