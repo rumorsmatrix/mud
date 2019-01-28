@@ -82,7 +82,7 @@ class Location extends \Illuminate\Database\Eloquent\Model {
 	}
 
 	private function getDocument() {
-		$filename = __DIR__ . '/../server/locations/' . $this->slug . '.md';
+		$filename = __DIR__ . '/../content/locations/' . $this->slug . '.md';
 		return file_exists($filename) ? file_get_contents($filename) : false;
 	}
 
