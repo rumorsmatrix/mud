@@ -3,9 +3,11 @@ class Client {
 	constructor() {
 
 		terminal.write('Connecting to server...', 'gray');
+
 		this.socket = new SimpleWebsocket('wss://rumorsmatrix.com:8080');
 
 		this.socket.on('connect', this.onConnect );
+
 		this.socket.on('data', function(data) {
 			data = data.toString();
 
@@ -20,11 +22,12 @@ class Client {
 
 		this.socket.on('close', function() {
 			clearInterval(this.ticker);
-			terminal.write("Disconnected from server.", 'red');
+			terminal.write("Connection closed.", 'red');
 		});
 
 		this.socket.on('error', function(err) {
-			console.log(err);
+			console.log( err.message.toString() );
+			if (err.message.includes('connection error to')) terminal.write("Error connecting to server.", "red");
 		});
 
 	}
