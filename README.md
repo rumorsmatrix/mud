@@ -37,6 +37,7 @@
 
 
 ### Week commencing 2019-01-28
+ - moved `Player->say()` from `Parser::handle()` and added corresponding JSON object
  - added `Description::getHTML` and corresponding `content/descriptions/` directory, plus `examine` action to `Parser::handle()`
  - moved `Parser::sendLocation` to `Player->lookAtLocation`
  - refactored `Location` and `Player` to receive a `Server` instance once instead of passing it per-method
