@@ -14,23 +14,30 @@ class Parser {
 			$value = trim($value);
 
 			if ($key === 'move') {
-				$current_location = $player->getCurrentLocation($server);
+				$current_location = $player->getCurrentLocation();
 				if (in_array($value, $current_location->getConnections())) {
-					$player->moveToLocation($value, $server);
-					static::sendLocation($player, $server);
+					$player->moveToLocation($value);
+					$player->lookAtLocation();
 				}
-
 			}
+
 
 			elseif ($key === 'examine' && !empty($value)) {
+				$current_location = $player->getCurrentLocation();
+				$actions = $current_location->getActions();
 
+				if (!isset($actions['examine'])) return false;
 
-
+				if (in_array($value, $actions['examine'])) {
+					$description = Description::getHTML($value);
+					$server->send($player, $description);
+				}
 			}
+
 
 			elseif ($key === 'say' && !empty($value)) {
 				$say_message = "<span class=\"yellow\">{$player->name}</span> says, &quot;{$value}&quot;";
-				$server->broadcastToLocation($say_message,  $player->getCurrentLocation($server));
+				$server->broadcastToLocation($say_message,  $player->getCurrentLocation());
 			}
 
 		}

@@ -37,6 +37,7 @@
 
 
 ### Week commencing 2019-01-28
+ - added `Description::getHTML` and corresponding `content/descriptions/` directory, plus `examine` action to `Parser::handle()`
  - moved `Parser::sendLocation` to `Player->lookAtLocation`
  - refactored `Location` and `Player` to receive a `Server` instance once instead of passing it per-method
 
@@ -44,4 +45,5 @@
 ## To do
 
  - (maybe) refactor `Parser` to receive a `Server` instance once instead of passing it per-method
- 
+ - `Player` to become an extension of a more generic `entity` with a view to NPCs
+

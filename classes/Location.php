@@ -17,6 +17,7 @@ class Location extends \Illuminate\Database\Eloquent\Model {
 	private $yaml = null;
 	private $html = '';
 	private $connections = [];
+	private $actions = [];
 	private $players_present = [];
 
 
@@ -34,6 +35,12 @@ class Location extends \Illuminate\Database\Eloquent\Model {
 		if (empty($this->yaml)) $this->yaml = $this->markdown->getYAML();
 		return $this->connections;
 	}
+
+	public function getActions() {
+		if (empty($this->yaml)) $this->yaml = $this->markdown->getYAML();
+		return $this->actions;
+	}
+
 
 	public function getPlayersPresent() {
 		return $this->players_present;
@@ -62,6 +69,16 @@ class Location extends \Illuminate\Database\Eloquent\Model {
 			$this->connections = $this->yaml['connections'];
 			unset($this->yaml['connections']);
 		}
+
+		if (!empty($this->yaml['actions'])) {
+			foreach($this->yaml['actions'] as $action) {
+				foreach ($action as $verb => $subject) {
+					$this->actions[$verb] = ($subject);
+				}
+			}
+			unset($this->yaml['actions']);
+		}
+
 		return $this->yaml;
 	}
 
