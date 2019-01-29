@@ -84,6 +84,8 @@ class Server {
 
 				// see if this player exists in the database
 				$player = Player::where('session', $client['cookies']['ws_session'])->first();
+
+				/** @var $player Player */
 				$player->setServer($this);
 
 				if ($player) {

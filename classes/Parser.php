@@ -18,11 +18,11 @@ class Parser {
 				if (in_array($value, $current_location->getConnections())) {
 					$player->moveToLocation($value);
 					$player->lookAtLocation();
+					return true;
 				}
-			}
 
 
-			elseif ($key === 'examine' && !empty($value)) {
+			} elseif ($key === 'examine' && !empty($value)) {
 				$current_location = $player->getCurrentLocation();
 				$actions = $current_location->getActions();
 
@@ -31,15 +31,19 @@ class Parser {
 				if (in_array($value, $actions['examine'])) {
 					$description = Description::getHTML($value);
 					$server->send($player, $description);
+					return true;
+				} else  {
+					return false;
 				}
-			}
 
-
-			elseif ($key === 'say' && !empty($value)) {
+			} elseif ($key === 'say' && !empty($value)) {
 				$player->say($value);
+				return true;
 			}
 
 		}
+
+		return false;
 	}
 
 

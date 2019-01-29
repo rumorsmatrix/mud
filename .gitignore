@@ -1,4 +1,5 @@
 vendor/*
 server/config/db.php
 public/imgs/*
-server/locations/*
+content/locations/*
+content/descriptions/*
