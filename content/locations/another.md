@@ -11,6 +11,6 @@ actions:
     - apple
 ---
 
-You are stood in a forest clearing. There is [a tree](?examine=tree) here.
+You are stood in a forest clearing. There is a [tree](?examine=tree) here.
 
 This is another location, linked to [the first one](?move=start).

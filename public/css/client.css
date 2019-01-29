@@ -3,7 +3,7 @@
 body {
     font-family: 'Fira Mono', monospace;
     font-size: 12px;
-    margin: 4.5rem auto 10rem auto;
+    margin: 4.5rem auto 4rem auto;
     max-width: 560px
 }
 
@@ -22,13 +22,17 @@ strong {
 }
 
 #terminal_container a {
+    border: 1px solid #333;
+    border-radius: 4px;
+    padding: 4px;
+    background: #222;
     color: #EEE;
     text-decoration: none;
 }
 
 #terminal_container a:hover {
     color: #FFF;
-    text-decoration: underline;
+    border: 1px solid #666;
 }
 
 #terminal_container .location-title {
