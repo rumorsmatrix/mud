@@ -1,19 +1,47 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-	<title>websockets client</title>
+	<meta charset="utf-8">
 	<meta name="viewport" content="width=device-width, initial-scale=1">
 	<script type="text/javascript" src="js/simplewebsocket.min.js"></script>
 	<script type="text/javascript" src="js/client.js"></script>
 	<script type="text/javascript" src="js/terminal.js"></script>
+	<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/css/bootstrap.min.css" integrity="sha384-GJzZqFGwb1QTTN6wy59ffF1BuGJpLSa9DkKMp0DgiMDm4iYMj70gZWKYbI706tWS" crossorigin="anonymous">
 	<link rel="stylesheet" href="css/colors.min.css">
 	<link rel="stylesheet" href="css/client.css">
 	<style type="text/css">
 
 
 	</style>
+	<title>websockets client</title>
 </head>
 <body class="bg-black gray">
+
+
+<nav class="navbar navbar-expand-md navbar-dark fixed-top bg-dark">
+	<a class="navbar-brand" href="#">rumorsmatrix/mud</a>
+	<button class="navbar-toggler" type="button" 
+		data-toggle="collapse" data-target="#navbarCollapse" 
+		aria-controls="navbarCollapse" aria-expanded="false" aria-label="Toggle navigation">
+		<span class="navbar-toggler-icon"></span>
+	</button>
+	<div class="collapse navbar-collapse" id="navbarCollapse">
+		<ul class="navbar-nav mr-auto">
+			<li class="nav-item active">
+				<a class="nav-link" href="#">Client <span class="sr-only">(current)</span></a>
+			</li>
+			<li class="nav-item">
+				<a class="nav-link" href="#">Link</a>
+			</li>
+			<li class="nav-item">
+				<a class="nav-link disabled" href="#">Disabled</a>
+			</li>
+		</ul>
+	</div>
+</nav>
+
+
+<main role="main" class="container">
 
 	<div id="terminal_container">
 		<p><img class="header-image" src="imgs/client-header.jpg"></p>
@@ -25,7 +53,12 @@
 		</form>
 	</div>
 
+</main>
 
+
+<script src="https://code.jquery.com/jquery-3.3.1.min.js" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.6/umd/popper.min.js" crossorigin="anonymous"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/js/bootstrap.min.js"  crossorigin="anonymous"></script>
 <script>
 
 	terminal = new Terminal('terminal');
