@@ -42,6 +42,15 @@ class Client {
 
 	onJSONData(data) {
 		console.log(data);
+
+		if (data.say) {
+			let output = '';
+			if (data.say.admin === 1) output += '<span class="green tag">admin</span> ';
+			output += '<span class="yellow">' + data.say.name + '</span> ';
+			output += 'says, &quot;' + data.say.message + '&quot;';
+			terminal.write(output);
+		}
+
 	}
 
 

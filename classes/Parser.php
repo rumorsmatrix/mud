@@ -36,8 +36,7 @@ class Parser {
 
 
 			elseif ($key === 'say' && !empty($value)) {
-				$say_message = "<span class=\"yellow\">{$player->name}</span> says, &quot;{$value}&quot;";
-				$server->broadcastToLocation($say_message,  $player->getCurrentLocation());
+				$player->say($value);
 			}
 
 		}

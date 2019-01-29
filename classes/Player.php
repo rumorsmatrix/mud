@@ -16,25 +16,17 @@ class Player extends \Illuminate\Database\Eloquent\Model {
 	protected $server = null;
 
 
-	/**
-	 * Player constructor.
-	 */
 	public function __construct() {
 		parent::__construct();
 	}
 
-	/**
-	 * @return null
-	 */
-	public function getClient() {
-		return $this->client;
-	}
 
-	/**
-	 * @param null $client
-	 */
 	public function setClient($client) {
 		$this->client = $client;
+	}
+
+	public function getClient() {
+		return $this->client;
 	}
 
 	public function setServer(Server $server) {
@@ -47,6 +39,19 @@ class Player extends \Illuminate\Database\Eloquent\Model {
 	}
 
 
+	public function say($message) {
+		$this->server->broadcastToLocation([
+			'say' => [
+				'name' => $this->name,
+				'admin' => $this->admin,
+				'message' => $message,
+				]
+			],
+			$this->getCurrentLocation()
+		);
+	}
+
+
 	public function lookAtLocation() {
 		$location = $this->server->getLocationByID($this->location_id);
 		$this->server->send($this, $location->getYAML());
@@ -55,7 +60,6 @@ class Player extends \Illuminate\Database\Eloquent\Model {
 
 
 	public function moveToLocation($location_slug) {
-
 		$new_location_id = Location::getIDFromSlug($location_slug);
 		if ($new_location_id) {
 
