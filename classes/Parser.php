@@ -20,7 +20,15 @@ class Parser {
 					static::sendLocation($player, $server);
 				}
 
-			} elseif ($key === 'say' && !empty($value)) {
+			}
+
+			elseif ($key === 'examine' && !empty($value)) {
+
+
+
+			}
+
+			elseif ($key === 'say' && !empty($value)) {
 				$say_message = "<span class=\"yellow\">{$player->name}</span> says, &quot;{$value}&quot;";
 				$server->broadcastToLocation($say_message,  $player->getCurrentLocation($server));
 			}
@@ -29,6 +37,9 @@ class Parser {
 	}
 
 
+
+
+	// todo: should this be on the server? or the player? or the location?
 	static public function sendLocation(Player $player, Server $server) {
 		$location = $server->getLocationByID($player->location_id);
 		$server->send($player, $location->getYAML());

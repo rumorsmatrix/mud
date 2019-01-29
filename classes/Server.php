@@ -76,13 +76,15 @@ class Server {
 		$this->log("Validating client...");
 		if (
 			(isset($client['headers']['origin']) && $client['headers']['origin'] === 'https://rumorsmatrix.com') &&
-			(null !== ((int)$client['socket']))
+			(null !== ((int)$client['socket'])) &&
+			(isset($client['cookies']['ws_session']))
 		) {
 
 			if (empty($this->players[(int)$client['socket']])) {
 
 				// see if this player exists in the database
-				$player = Player::where('session', (int)$client['cookies']['ws_session'])->first();
+				$player = Player::where('session', $client['cookies']['ws_session'])->first();
+				$player->setServer($this);
 
 				if ($player) {
 					// this player exists, add it to the players in memory
@@ -119,10 +121,11 @@ class Server {
 		$this->log("Connected: " . $player->name);
 
 		// send the player's current location to them
-		$location = $player->getCurrentLocation($this);
+		$location = $player->getCurrentLocation();
 		$location->setPlayerPresent($player, $this);
-		Parser::sendLocation($player, $this);
+		$player->lookAtLocation();
 	}
+
 
 	private function onDisconnect(Player $player) {
 		$this->log($player->name . " disconnected.");
@@ -217,6 +220,7 @@ class Server {
 	}
 
 	public function setLocation($index, Location $location) {
+		$location->setServer($this);
 		$this->locations[$index] = $location;
 	}
 

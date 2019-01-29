@@ -11,6 +11,7 @@ namespace Rumorsmatrix\Mud;
 class Location extends \Illuminate\Database\Eloquent\Model {
 
 	protected $table = 'locations';
+	protected $server = null;
 	private $yaml_parser = null;
 	private $markdown = '';
 	private $yaml = null;
@@ -22,6 +23,10 @@ class Location extends \Illuminate\Database\Eloquent\Model {
 	public function __construct() {
 		parent::__construct();
 		if (!isset($this->yaml_parser)) $this->yaml_parser = new \Mni\FrontYAML\Parser();
+	}
+
+	public function setServer(Server $server) {
+		$this->server = $server;
 	}
 
 
@@ -38,13 +43,13 @@ class Location extends \Illuminate\Database\Eloquent\Model {
 		$this->players_present[$player->id] = $player;
 	}
 
-	public function setPlayerNotPresent(Player $player, Server $server) {
+	public function setPlayerNotPresent(Player $player) {
 		if (isset($this->players_present[$player->id])) {
 			unset($this->players_present[$player->id]);
 
 			// did the last player just leave?
 			if (count($this->players_present) === 0) {
-				$server->unsetLocation($this->id);
+				$this->server->unsetLocation($this->id);
 			}
 		}
 	}
